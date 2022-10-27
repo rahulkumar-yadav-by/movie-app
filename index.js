@@ -18,6 +18,8 @@ const jwt = require("jsonwebtoken")
 // import routes for Users
 const userRoutes = require("./Routes/routesUsers")
 
+// import routes for Movies
+const moviesRoutes = require("./Routes/routesMovies")
 
 
 // Initializing the (Server)
@@ -30,7 +32,7 @@ app.use(logger('dev'))
 app.use(bodyParser.json())
 
 
-// start server at port: 8081
+// start server at port: 3000
 var PORT = 3000;
 app.listen(PORT, function(err){
     if (err) console.log(err);
@@ -47,6 +49,7 @@ app.get("/",(req,res) => {
 
 // Default path for User routes/Controller
 app.use("/users",userRoutes);
+app.use("/movies",moviesRoutes);
 
 
 // Connecting to MongoDb Database using mongo-URI.
