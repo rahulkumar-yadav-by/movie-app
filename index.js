@@ -47,9 +47,11 @@ app.get("/",(req,res) => {
 })
 
 
-// Default path for User routes/Controller
-app.use("/users",userRoutes);
-app.use("/movies",moviesRoutes);
+// // Default path for User routes/Controller
+// app.use("/users",userRoutes);
+
+// // Default path for Movies routes/Controller
+// app.use("/movies",moviesRoutes);
 
 
 // Connecting to MongoDb Database using mongo-URI.
@@ -70,3 +72,17 @@ mongoose.connect(
 
 // Setting a secret key with random string for jwt initial token
 app.set("secret_key","qwertyuiop")
+
+
+// make a function for GetAllMovies Api call to restrict unAuthorized user.
+const userValidation = (req, res, next) => {
+    jwt.verify(req.headers["x-access-token"],req.app.get('secret_key'),(error,decoded) => {
+            if(error) { next(error);  }
+            next();
+    })
+}
+
+
+// Default path for User routes/Controller
+app.use("/users",userRoutes);
+app.use("/movies",userValidation,moviesRoutes);
