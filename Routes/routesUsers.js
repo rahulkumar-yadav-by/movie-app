@@ -7,6 +7,9 @@ const router = express.Router();
 router.post("/createUser",userController.create);
 
 
+// APIs with routes
+router.post("/loginUser",userController.login);
+
 
 // Export
 module.exports = router;

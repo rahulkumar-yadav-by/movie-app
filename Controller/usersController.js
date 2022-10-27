@@ -17,7 +17,34 @@ const create = (req, res, next) => {
     })
 }
 
+const login=(req,res,next)=>{
+    UserModel.findOne({email:req.body.email},(err,result)=>{
+        if(err){next(err);}
+        else{
+            if(bcrypt.compare(req.body.password,result.password,null)){
+                //generating the token using jwt.sign()
+                //3 parameters
+                //   1. claims
+                //  2. secret key
+                //  3. expiert time of token
+               const token = jwt.sign(
+                            {
+                                id:result._id,
+                            },
+                            req.app.get("secret_key"),
+                            {
+                                expiresIn:"1H"
+                            }
+                        );
+                res.status(200).json({message:"Sussessfully Loggeg in",data:{user:result,token:token}});
+               
+
+            }
+        }
+    })
+}
+
 
 
 // Export
-module.exports = {create};
+module.exports = {create,login};
